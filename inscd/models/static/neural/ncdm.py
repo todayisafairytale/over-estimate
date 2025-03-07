@@ -46,14 +46,14 @@ class NCDM(_CognitiveDiagnosisModel):
                                  dtype=dtype)
 
     def train(self, datahub: DataHub, set_type="train", valid_set_type="valid",
-              valid_metrics=None, epoch=10, lr=2e-3, weight_decay=0.0005, batch_size=256):
+              valid_metrics=None, epoch=10, lr=2e-3,  batch_size=256):
         if valid_metrics is None:
             valid_metrics = ["acc", "auc"]
         loss_func = nn.CrossEntropyLoss()
         optimizer = optim.Adam([{'params': self.extractor.parameters(),
-                                 'lr': lr, "weight_decay": weight_decay},
+                                 'lr': lr},
                                 {'params': self.inter_func.parameters(),
-                                 'lr': lr, "weight_decay": weight_decay}])
+                                 'lr': lr}])
         for epoch_i in range(0, epoch):
             print("[Epoch {}]".format(epoch_i + 1))
             self._train(datahub=datahub, set_type=set_type,

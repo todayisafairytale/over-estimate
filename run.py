@@ -23,7 +23,7 @@ parser.add_argument('--method', default='ncdm', type=str,
                     help='method')
 parser.add_argument('--data_type', default='real', type=str, help='benchmark')
 parser.add_argument('--test_size', default=0.2, type=float, help='test size of benchmark')
-parser.add_argument('--epoch', type=int, help='epoch of method', default=10)
+parser.add_argument('--epoch', type=int, help='epoch of method', default=20)
 parser.add_argument('--seed', default=0, type=int, help='seed for exp')
 parser.add_argument('--dtype', default=torch.float64, help='dtype of tensor')
 parser.add_argument('--device', default='cpu', type=str, help='device for exp')
@@ -68,7 +68,7 @@ def main(config):
     print("Number of response logs {}".format(len(datahub)))
     ncdm = NCDM(datahub.student_num, datahub.exercise_num, datahub.knowledge_num)
     ncdm.build(device=config['device'])
-    ncdm.train(datahub, "train", "test", valid_metrics=validate_metrics, batch_size=config['batch_size'],epoch=config['epoch'], weight_decay=0.0005, lr=2e-3)
+    ncdm.train(datahub, "train", "test", valid_metrics=validate_metrics, batch_size=config['batch_size'],epoch=config['epoch'], lr=2e-3)
     theta=ncdm.get_attribute("over_estimate")
     np.savetxt("test_theta_3.csv",theta,fmt="%f")
 

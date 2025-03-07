@@ -27,7 +27,7 @@ class _Unifier:
                 exercise_id: torch.Tensor = exercise_id.to(device)
                 q_mask: torch.Tensor = q_mask.to(device)
                 S:torch.Tensor = S.to(device)
-                r:torch.Tensor=torch.tensor(r,dtype=torch.long)
+                r:torch.Tensor=torch.tensor(r,dtype=torch.int64)
                 R:torch.Tensor =torch.tensor(np.eye(5)[r]).to(device)
                 _ = extractor.extract(student_id,exercise_id,S)
                 student_ts, diff_ts, disc_ts = _[:3]
@@ -49,7 +49,7 @@ class _Unifier:
                 optimizer.zero_grad()
                 loss.backward()
                 optimizer.step()
-                #inter_func.monotonicity()
+                inter_func.monotonicity()
                 extractor.clamp_theta()
                 epoch_losses.append(loss.mean().item())
             print("Average loss: {}".format(float(np.mean(epoch_losses))))

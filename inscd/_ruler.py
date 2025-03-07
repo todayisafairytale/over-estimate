@@ -14,7 +14,7 @@ class _Ruler:
     "degree of agreement (doa)" and "mean average distance (mad)"
     """
 
-    def __init__(self, threshold=0.5, partial_doa=30, top_k=10):
+    def __init__(self, threshold=0.2, partial_doa=30, top_k=10):
         self.threshold = threshold
         self.partial_doa = partial_doa
         self.top_k_doa = top_k
@@ -29,7 +29,7 @@ class _Ruler:
         }
 
     def accuracy(self, true_r, pred_r):
-        return accuracy_score(true_r, np.array(pred_r) >= self.threshold)
+        return accuracy_score(true_r, pred_r)
 
     @staticmethod
     def area_under_curve(true_r, pred_r):
@@ -151,8 +151,8 @@ class _Ruler:
 
     def __call__(self, model, datahub, set_type: str, pred_r, metrics: list):
         true_r = datahub.detach_labels(set_type)
-        true_r=torch.tensor(true_r,dtype=torch.long)
-        pred_r_argmax=(np.argmax(pred_r,axis=1))
+        true_r=torch.tensor(true_r,dtype=torch.int64)
+        pred_r_argmax=np.argmax(pred_r,axis=1)
         pred_r_softmax=F.softmax(torch.tensor(pred_r),dim=1)
         true_r_onehot=np.array(true_r)
         true_r_onehot=np.eye(5)[true_r_onehot]

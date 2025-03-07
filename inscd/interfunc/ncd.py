@@ -61,7 +61,7 @@ class NCD_IF(_InteractionFunction, nn.Module):
     def transform(self, tensor):
         return F.sigmoid(tensor)
 
-    # def monotonicity(self):
-    #     for layer in self.mlp:
-    #         if isinstance(layer, nn.Linear):
-    #             layer.apply(none_neg_clipper)
+    def monotonicity(self):
+        for layer in self.mlp:
+            if isinstance(layer, nn.Linear):
+                layer.apply(none_neg_clipper)
